@@ -27,9 +27,9 @@ function on_draw() end
 function on_update() end
 
 -- Helper Functions
-function setupPlayers(terrain)
+function setupPlayers()
   for i = 1, #player_position do
-    player = addObject(terrain, string.format("./scripts/player%d.lua", i))
+    player = addObject(string.format("./scripts/player%d.lua", i))
     setPositionv(player, player_position[i])
   end
 end

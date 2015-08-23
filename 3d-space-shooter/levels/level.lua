@@ -30,23 +30,23 @@ function on_load(terrain)
   setPosition(camera, X_START_CAMERA, 20.0, Z_START_CAMERA)
 
   for i=1,25 do
-    obj = addObject(terrain, "./scripts/building.lua")
+    obj = addObject("./scripts/building.lua")
     setPosition(obj, 130.0, 10.0, -(i * 70) - 250.0)
     setScale(obj, 10.0, 20.0, 10.0)
 
-    obj = addObject(terrain, "./scripts/building.lua")
+    obj = addObject("./scripts/building.lua")
     setPosition(obj, 190.0, 10.0, -(i * 70) - 250.0)
     setScale(obj, 10.0, 20.0, 10.0)
   end
 
   for i=1,40 do
-    obj = addObject(terrain, "./scripts/enemy_ship.lua")
+    obj = addObject("./scripts/enemy_ship.lua")
     setPosition(obj, (math.random(20) + 150), (15 + math.random(10.0)), -(math.random(200) * 10) - 200.0)
     setScale(obj, 4.0, 4.0, 4.0)
     setRotation(obj, 0.0,  0.0, 0.0)
   end
 
-  boss = addObject(terrain, "./scripts/boss.lua")
+  boss = addObject("./scripts/boss.lua")
   setPosition(boss, 160.0, 20.0, -2450.0)
 
   addParticleSystem(camera, 1)

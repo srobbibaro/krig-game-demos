@@ -26,8 +26,8 @@ end
 function create_explosion(this)
   this_position = getPosition(this)
 
-  obj = addObject(this, "./scripts/explosion.lua")
-  setPosition(obj, this_position[1], this_position[2], this_position[3])
+  obj = addObject("./scripts/explosion.lua")
+  setPositionv(obj, this_position)
 end
 
 function create_score_text(this)
@@ -35,7 +35,7 @@ function create_score_text(this)
   cam_vel = getVelocity(camera)
   this_position = getPosition(this)
 
-  obj = addText(this, "./scripts/camera.lua", score)
+  obj = addText("./scripts/camera.lua", score)
 
   setPositionv(obj, this_position)
   setScale(obj, 0.25, 0.25, 0.0)
