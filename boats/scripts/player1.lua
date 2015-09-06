@@ -9,19 +9,19 @@ controls = {
 }
 
 key_state = {
-  key_pressed  = engine_testSpecialKeyPressed,
-  key_released = engine_testSpecialKeyReleased,
+  key_pressed  = krig.test_special_key_pressed,
+  key_released = krig.test_special_key_released,
 }
 
 -- Overridden Engine Callbacks
 function on_load(this)
-  setModel(this, "SailBoat.mdl")
+  krig.object.set_model(this, "SailBoat.mdl")
 
-  setRotation(this, 0.0, 1.57, 0.0)
-  setScale(this, 7.0, 7.0, 7.0)
-  setVelocity(this, 40.0, 0.0, 0.0)
+  krig.object.set_rotation(this, 0.0, 1.57, 0.0)
+  krig.object.set_scale(this, 7.0, 7.0, 7.0)
+  krig.object.set_velocity(this, 40.0, 0.0, 0.0)
 
-  setTypeId(this, 0)
+  krig.object.set_type_id(this, 0)
 end
 
 function on_update(this, elapsedTime)

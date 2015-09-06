@@ -6,11 +6,11 @@ control_pressed = {
 }
 
 function update(this, controls, key_state)
-  orientOnTerrain(this, 0.0, 0.0, 0.0)
+  krig.object.orient_on_terrain(this, 0.0, 0.0, 0.0)
 
-  this_velocity   = getVelocity(this)
-  camera          = getCamera()
-  camera_velocity = getVelocity(camera)
+  this_velocity   = krig.object.get_velocity(this)
+  camera          = krig.get_camera()
+  camera_velocity = krig.object.get_velocity(camera)
 
   this_velocity[1] = camera_velocity[1]
   this_velocity[2] = camera_velocity[2]
@@ -30,27 +30,27 @@ function update(this, controls, key_state)
   if control_pressed["left"]  == 1 then this_velocity[1] = this_velocity[1] - 25 end
   if control_pressed["right"] == 1 then this_velocity[1] = this_velocity[1] + 25 end
 
-  setVelocityv(this, this_velocity)
+  krig.object.set_velocity(this, this_velocity)
 
   restrict_to_view(this)
 end
 
 function restrict_to_view(this)
-  this_pos = getPosition(this)
+  this_pos = krig.object.get_position(this)
 
   -- Ax + By + Cz + D = 0
-  plane = camera_getFrustumPlane(1)
+  plane = krig.camera.get_frustum_plane(1)
   x     = -(((plane[3] * this_pos[3]) + plane[4]) / plane[1])
 
-  if this_pos[1] > x - getBoundingSphereRadius(this) then
-    this_pos[1] = x - getBoundingSphereRadius(this)
+  if this_pos[1] > x - krig.object.get_bounding_sphere_radius(this) then
+    this_pos[1] = x - krig.object.get_bounding_sphere_radius(this)
   end
 
-  plane = camera_getFrustumPlane(0)
+  plane = krig.camera.get_frustum_plane(0)
   x     = -(((plane[3] * this_pos[3]) + plane[4]) / plane[1])
 
-  if this_pos[1] < x + getBoundingSphereRadius(this) then
-    this_pos[1] = x + getBoundingSphereRadius(this)
+  if this_pos[1] < x + krig.object.get_bounding_sphere_radius(this) then
+    this_pos[1] = x + krig.object.get_bounding_sphere_radius(this)
   end
 
   if this_pos[3] > 0 then
@@ -61,14 +61,12 @@ function restrict_to_view(this)
     this_pos[3] = -140
   end
 
-  setPositionv(this, this_pos)
+  krig.object.set_position(this, this_pos)
 end
 
 function on_collision(this,temp)
-  tempId = getTypeId(temp)
+  tempId = krig.object.get_type_id(temp)
   if temp_id == 100 then
-    orientOnTerrain(this, 0.0, 0.0, 0.0)
+    krig.object.orient_on_terrain(this, 0.0, 0.0, 0.0)
   end
 end
-
-function on_unload(this, temp) end
