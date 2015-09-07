@@ -4,18 +4,18 @@ stopped = 0
 
 -- Overridden Engine Callbacks
 function on_load(this)
-  setVelocity(this, 0.0, 0.0, -20.0)
+  krig.object.set_velocity(this, 0.0, 0.0, -20.0)
 end
 
 function on_update(this, elapsedTime)
-  this_position = getPosition(this)
+  this_position = krig.object.get_position(this)
   if stopped == 0 then
     if this_position[3] <= MAX_Z then
       stopped = 1
-      setVelocity(this, 0.0, 0.0, 0.0)
-      player = getPlayer()
-      player_velocity = getVelocity(player)
-      setVelocity(
+      krig.object.set_velocity(this, 0.0, 0.0, 0.0)
+      player = krig.get_player()
+      player_velocity = krig.object.get_velocity(player)
+      krig.object.set_velocity(
         player,
         player_velocity[1],
         player_velocity[2],
@@ -24,6 +24,3 @@ function on_update(this, elapsedTime)
     end
   end
 end
-
-function on_unload(this) end
-function on_collision(this, temp) end

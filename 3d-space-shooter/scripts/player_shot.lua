@@ -4,29 +4,27 @@ duration     = 0.0
 
 -- Overridden Engine Callbacks
 function on_load(this)
-  setModel(this, "blueshot.mdl")
-  setTypeId(this, 2)
-  enableAlwaysLit(this)
+  krig.object.set_model(this, "blueshot.mdl")
+  krig.object.set_type_id(this, 2)
+  krig.object.enable_always_lit(this)
 
-  playSound(this, "laser.wav")
+  krig.play_sound(this, "laser.wav")
 end
 
 function on_update(this, elapsedTime)
   duration = duration + elapsedTime
 
   if duration > MAX_DURATION then
-    removeObject(this)
+    krig.level.remove_object(this)
     duration = 0.0
   end
 end
 
 function on_collision(this, temp)
-  typeId = getTypeId(temp)
+  typeId = krig.object.get_type_id(temp)
 
   if typeId ~= 0 and typeId ~= 10 then
-    removeObject(this)
+    krig.level.remove_object(this)
     duration = 0.0
   end
 end
-
-function on_unload(this) end

@@ -12,16 +12,16 @@ score      = 5000
 
 -- Overridden Engine Callbacks
 function on_load(this)
-  setModel(this, "boss.mdl")
-  setRotation(this, 0.0, 0.0, 0.0)
-  setScale(this, 20.0, 20.0, 4.0)
+  krig.object.set_model(this, "boss.mdl")
+  krig.object.set_rotation(this, 0.0, 0.0, 0.0)
+  krig.object.set_scale(this, 20.0, 20.0, 4.0)
 
   math.randomseed(os.time())
   set_window()
   speed = calc_speed()
-  setVelocity(this, -speed, 0.0, 0.0)
+  krig.object.set_velocity(this, -speed, 0.0, 0.0)
 
-  setTypeId(this, 1)
+  krig.object.set_type_id(this, 1)
   life = 40
 
   setupShots(this, './scripts/boss_shot.lua', 0.95)
@@ -30,38 +30,38 @@ end
 function on_update(this, elapsedTime)
   update_shots(elapsedTime)
 
-  this_position = getPosition(this)
-  this_velocity = getVelocity(this)
+  this_position = krig.object.get_position(this)
+  this_velocity = krig.object.get_velocity(this)
 
   if this_velocity[1] > 0.0 then
     if this_position[1] > x_max then
       speed = calc_speed()
-      setVelocity(this, 0.0, speed, 0.0)
+      krig.object.set_velocity(this, 0.0, speed, 0.0)
     end
   elseif this_velocity[1] < 0.0 then
     if this_position[1] < x_min then
       speed = calc_speed()
-      setVelocity(this, 0.0, speed, 0.0)
+      krig.object.set_velocity(this, 0.0, speed, 0.0)
     end
   elseif this_velocity[2] > 0.0 then
     if this_position[2] > y_max then
       speed = calc_speed()
-      setVelocity(this, speed, 0.0, 0.0)
+      krig.object.set_velocity(this, speed, 0.0, 0.0)
     end
   elseif this_velocity[2] < 0.0 then
     if this_position[2] < y_min then
       speed = calc_speed()
-      setVelocity(this, speed, 0.0, 0.0)
+      krig.object.set_velocity(this, speed, 0.0, 0.0)
       set_window()
     end
   end
 
-  plr = getPlayer()
-  plr_pos = getPosition(plr)
-  in_view = getInView(this)
+  plr = krig.get_player()
+  plr_pos = krig.object.get_position(plr)
+  in_view = krig.object.get_in_view(this)
 
   if in_view == 1 then
-    radius = getBoundingSphereRadius(this) - 1.25
+    radius = krig.object.get_bounding_sphere_radius(this) - 1.25
     attemptShots(this, 2, {radius, radius}, {radius, -radius})
   end
 end
@@ -70,12 +70,10 @@ function on_collision(this, temp)
   handle_collision(this, temp)
 end
 
-function on_unload(this) end
-
 -- Helper functions
 function set_window()
-  camera = getCamera()
-  camera_position = getPosition(camera)
+  camera = krig.get_camera()
+  camera_position = krig.object.get_position(camera)
   x_min = camera_position[1] - math.random(50)
   x_max = camera_position[1] + math.random(50)
   y_min = camera_position[2] + math.random(10) + 5

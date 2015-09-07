@@ -10,52 +10,52 @@ bossLife = 0
 
 -- Overriden Engine Callbacks
 function on_load(terrain)
-  setSkyBox(
+  krig.level.set_sky_box(
     0.2, 0.5, 0.8,
     0.7, 0.2, 0.5,
     0.6, 0.4, 0.7
   )
 
-  setLightDirection(0.25, 0.25, 0.5)
+  krig.level.set_light_direction(0.25, 0.25, 0.5)
 
-  setTerrain(terrain, "./terrains/level.txt")
-  disableCollisionDetection(terrain)
+  krig.level.set_terrain(terrain, "./terrains/level.txt")
+  krig.object.disable_collision_detection(terrain)
 
-  player = getPlayer()
-  setScript(player, "./scripts/player.lua")
-  setPosition(player, X_START_PLAYER, 20.0, Z_START_CAMERA - 20.0)
+  player = krig.get_player()
+  krig.object.set_script(player, "./scripts/player.lua")
+  krig.object.set_position(player, X_START_PLAYER, 20.0, Z_START_CAMERA - 20.0)
 
-  camera = getCamera()
-  setScript(camera, "./scripts/camera.lua")
-  setPosition(camera, X_START_CAMERA, 20.0, Z_START_CAMERA)
+  camera = krig.get_camera()
+  krig.object.set_script(camera, "./scripts/camera.lua")
+  krig.object.set_position(camera, X_START_CAMERA, 20.0, Z_START_CAMERA)
 
   for i=1,25 do
-    obj = addObject("./scripts/building.lua")
-    setPosition(obj, 130.0, 10.0, -(i * 70) - 250.0)
-    setScale(obj, 10.0, 20.0, 10.0)
+    obj = krig.level.add_object("./scripts/building.lua")
+    krig.object.set_position(obj, 130.0, 10.0, -(i * 70) - 250.0)
+    krig.object.set_scale(obj, 10.0, 20.0, 10.0)
 
-    obj = addObject("./scripts/building.lua")
-    setPosition(obj, 190.0, 10.0, -(i * 70) - 250.0)
-    setScale(obj, 10.0, 20.0, 10.0)
+    obj = krig.level.add_object("./scripts/building.lua")
+    krig.object.set_position(obj, 190.0, 10.0, -(i * 70) - 250.0)
+    krig.object.set_scale(obj, 10.0, 20.0, 10.0)
   end
 
   for i=1,40 do
-    obj = addObject("./scripts/enemy_ship.lua")
-    setPosition(obj, (math.random(20) + 150), (15 + math.random(10.0)), -(math.random(200) * 10) - 200.0)
-    setScale(obj, 4.0, 4.0, 4.0)
-    setRotation(obj, 0.0,  0.0, 0.0)
+    obj = krig.level.add_object("./scripts/enemy_ship.lua")
+    krig.object.set_position(obj, (math.random(20) + 150), (15 + math.random(10.0)), -(math.random(200) * 10) - 200.0)
+    krig.object.set_scale(obj, 4.0, 4.0, 4.0)
+    krig.object.set_rotation(obj, 0.0,  0.0, 0.0)
   end
 
-  boss = addObject("./scripts/boss.lua")
-  setPosition(boss, 160.0, 20.0, -2450.0)
+  boss = krig.level.add_object("./scripts/boss.lua")
+  krig.object.set_position(boss, 160.0, 20.0, -2450.0)
 
-  addParticleSystem(camera, 1)
+  krig.object.add_particle_system(camera, 1)
 end
 
 function on_draw()
-  player = getPlayer()
-  plr_pos = getPosition(player)
-  plr_dir = getDirection(player)
+  player = krig.get_player()
+  plr_pos = krig.object.get_position(player)
+  plr_dir = krig.object.get_direction(player)
 
   for i = 1, 4 do
     gl.PushMatrix()
@@ -84,11 +84,8 @@ end
 
 function on_draw_screen(terrain, elapsedTime)
   bossLife = 0
-  if boss ~= nil then bossLife = getScriptValue(boss, "life") end
+  if boss ~= nil then bossLife = krig.get_script_value(boss, "life") end
   if bossLife == 0 then boss = nil end
 
   display_hud(bossLife)
 end
-
-function on_update(this) end
-function on_unload() end

@@ -3,24 +3,24 @@ endTimer     = 10.0
 debugEnabled = nil
 
 function display_hud(bossLife)
-  player = getPlayer()
+  player = krig.get_player()
 
-  ShipEnergy  = getScriptValue(player, "life")
-  score       = getScriptValue(player, "score")
+  ShipEnergy  = krig.get_script_value(player, "life")
+  score       = krig.get_script_value(player, "score")
   EnemyEnergy = bossLife
   EnergyBar   = -0.31 - (0.068 * (10.0 - ShipEnergy))
   BossEnergy  = 0.31 + (0.017 * (40.0 - EnemyEnergy))
 
-  plr_pos = getPosition(player)
+  plr_pos = krig.object.get_position(player)
 
   gl.PushMatrix()
   gl.Translate (0.0, 0.0, -2.0)
   gl.Color(1.0, 1.0, 1.0)
-  renderText("Lives: " .. getScriptValue(player, "lives"), -1.0, 0.7)
+  krig.render_text("Lives: " .. krig.get_script_value(player, "lives"), -1.0, 0.7)
 
-  renderText("Score: " .. score, -.2, 0.7)
+  krig.render_text("Score: " .. score, -.2, 0.7)
 
-  renderText("Enemy", 0.85, 0.7)
+  krig.render_text("Enemy", 0.85, 0.7)
 
   gl.Begin("QUADS")
   gl.Color(0.0, 0.3, 0.3)
@@ -60,7 +60,7 @@ function update_level(timeElapsed, bossLife)
     elseif bossDefeated == 1 then
       endTimer = endTimer - timeElapsed
       if endTimer < 0.0 then
-        setComplete(1)
+        krig.level.set_complete(1)
       end
     end
   end

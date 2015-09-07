@@ -1,27 +1,25 @@
 -- Overridden Engine Callbacks
 function on_load(this)
-  setModel(this, "greenshot.mdl")
-  setTypeId(this, 20)
-  enableAlwaysLit(this)
+  krig.object.set_model(this, "greenshot.mdl")
+  krig.object.set_type_id(this, 20)
+  krig.object.enable_always_lit(this)
 
-  playSound(this, "laser.wav")
-  setScale(this, 18.0, 18.0, 18.0)
+  krig.play_sound(this, "laser.wav")
+  krig.object.set_scale(this, 18.0, 18.0, 18.0)
 end
 
 function on_update(this, elapsedTime)
-  in_view = getInView(this)
+  in_view = krig.object.get_in_view(this)
 
   if in_view == 0 then
-    removeObject(this)
+    krig.level.remove_object(this)
   end
 end
 
 function on_collision(this, temp)
-  typeId = getTypeId(temp)
+  typeId = krig.object.get_type_id(temp)
 
   if typeId ~= 1 and typeId ~= 3 and typeId ~= 2 then
-    removeObject(this)
+    krig.level.remove_object(this)
   end
 end
-
-function on_unload(this) end
