@@ -15,13 +15,12 @@ key_state = {
 
 -- Overridden Engine Callbacks
 function on_load(this)
-  krig.object.set_model(this, "SailBoat.mdl")
+  this.rotation = krig.rotation.from_euler({0.0, 1.57, 0.0})
+  this.scale    = {7.0, 7.0, 7.0}
+  this.type_id  = 0
+  this:save()
 
-  krig.object.set_rotation(this, 0.0, 1.57, 0.0)
-  krig.object.set_scale(this, 7.0, 7.0, 7.0)
-  krig.object.set_velocity(this, 40.0, 0.0, 0.0)
-
-  krig.object.set_type_id(this, 0)
+  this:set_model("SailBoat.mdl")
 end
 
 function on_update(this, elapsedTime)

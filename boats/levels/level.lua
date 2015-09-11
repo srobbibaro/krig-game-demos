@@ -18,14 +18,16 @@ function on_load(terrain)
   setupPlayers(terrain)
 
   camera = krig.get_camera()
-  krig.object.set_script(camera, "./scripts/camera1.lua")
-  krig.object.set_position(camera, x_start_camera, 15.0, 35.0)
+  camera:set_script("./scripts/camera1.lua")
+  camera.position = {x_start_camera, 15.0, 35.0}
+  camera:save()
 end
 
 -- Helper Functions
 function setupPlayers()
   for i = 1, #player_position do
     player = krig.level.add_object(string.format("./scripts/player%d.lua", i))
-    krig.object.set_position(player, player_position[i])
+    player.position = krig.vector.copy(player_position[i])
+    player:save()
   end
 end
