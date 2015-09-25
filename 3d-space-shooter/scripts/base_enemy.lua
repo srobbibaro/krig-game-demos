@@ -1,13 +1,14 @@
+inspect = require('inspect')
 -- Configuration
 life  = 1
 score = 0
 
 -- Overridden Engine Callbacks
 function handle_collision(this, temp)
-  typeId = krig.object.get_type_id(temp)
-  thisTypeId = krig.object.get_type_id(this)
+  temp = temp:load()
+  this = this:load()
 
-  if typeId == 2 or (typeId == 4 and thisTypeId ~= 4) then
+  if temp.type_id == 2 or (temp.type_id == 4 and this.type_id ~= 4) then
     krig.play_sound(this, "explosion1.wav")
     life = life - 1
     if life <= 0 then
@@ -24,22 +25,26 @@ function handle_collision(this, temp)
 end
 
 function create_explosion(this)
-  this_position = krig.object.get_position(this)
+  this = this:load()
 
   obj = krig.level.add_object("./scripts/explosion.lua")
-  krig.object.set_position(obj, this_position)
+  obj.position = {this.position[1], this.position[2], this.position[3]}
+  obj:save()
 end
 
 function create_score_text(this)
-  camera = krig.get_camera()
-  cam_vel = krig.object.get_velocity(camera)
-  this_position = krig.object.get_position(this)
+  camera = krig.get_camera():load()
+  this   = this:load()
 
   obj = krig.level.add_text("./scripts/camera.lua", score)
 
-  krig.object.set_position(obj, this_position)
-  krig.object.set_scale(obj, 0.25, 0.25, 0.0)
-  krig.object.set_velocity(obj, cam_vel[1], 2.0, cam_vel[3])
-  krig.text.set_fade_rate(obj, -.25)
-  krig.text.set_color(obj, 1.0, 1.0, 1.0)
+  obj.position  = krig.vector.copy(this.position)
+  obj.scale     = {0.25, 0.25, 0.0}
+  obj.velocity  = {camera.velocity[1], 2.0, camera.velocity[3]}
+
+  obj.fade_rate = -.25
+  obj.color     = {1.0, 1.0, 1.0, 1.0}
+  obj:save()
+  obj = obj:load()
+  print(inspect(obj))
 end

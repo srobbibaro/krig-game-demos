@@ -12,16 +12,17 @@ score      = 5000
 
 -- Overridden Engine Callbacks
 function on_load(this)
-  krig.object.set_model(this, "boss.mdl")
-  krig.object.set_rotation(this, 0.0, 0.0, 0.0)
-  krig.object.set_scale(this, 20.0, 20.0, 4.0)
+  this:set_model("boss.mdl")
+  this.rotation = krig.rotation.from_euler({0.0, 0.0, 0.0})
+  this.scale    = {20.0, 20.0, 4.0}
 
   math.randomseed(os.time())
   set_window()
   speed = calc_speed()
-  krig.object.set_velocity(this, -speed, 0.0, 0.0)
+  this.velocity = {-speed, 0.0, 0.0}
+  this.type_id  = 1
+  this:save()
 
-  krig.object.set_type_id(this, 1)
   life = 40
 
   setupShots(this, './scripts/boss_shot.lua', 0.95)
@@ -30,40 +31,37 @@ end
 function on_update(this, elapsedTime)
   update_shots(elapsedTime)
 
-  this_position = krig.object.get_position(this)
-  this_velocity = krig.object.get_velocity(this)
+  this = this:load()
 
-  if this_velocity[1] > 0.0 then
-    if this_position[1] > x_max then
-      speed = calc_speed()
-      krig.object.set_velocity(this, 0.0, speed, 0.0)
+  if this.velocity[1] > 0.0 then
+    if this.position[1] > x_max then
+      speed         = calc_speed()
+      this.velocity = {0.0, speed, 0.0}
     end
-  elseif this_velocity[1] < 0.0 then
-    if this_position[1] < x_min then
-      speed = calc_speed()
-      krig.object.set_velocity(this, 0.0, speed, 0.0)
+  elseif this.velocity[1] < 0.0 then
+    if this.position[1] < x_min then
+      speed         = calc_speed()
+      this.velocity = {0.0, speed, 0.0}
     end
-  elseif this_velocity[2] > 0.0 then
-    if this_position[2] > y_max then
-      speed = calc_speed()
-      krig.object.set_velocity(this, speed, 0.0, 0.0)
+  elseif this.velocity[2] > 0.0 then
+    if this.position[2] > y_max then
+      speed          = calc_speed()
+      this.velocity  = {speed, 0.0, 0.0}
     end
-  elseif this_velocity[2] < 0.0 then
-    if this_position[2] < y_min then
-      speed = calc_speed()
-      krig.object.set_velocity(this, speed, 0.0, 0.0)
+  elseif this.velocity[2] < 0.0 then
+    if this.position[2] < y_min then
+      speed         = calc_speed()
+      this.velocity = {speed, 0.0, 0.0}
       set_window()
     end
   end
 
-  plr = krig.get_player()
-  plr_pos = krig.object.get_position(plr)
-  in_view = krig.object.get_in_view(this)
-
-  if in_view == 1 then
-    radius = krig.object.get_bounding_sphere_radius(this) - 1.25
+  if this.in_view == 1 then
+    radius = this.bounding_sphere_radius - 1.25
     attemptShots(this, 2, {radius, radius}, {radius, -radius})
   end
+
+  this:save()
 end
 
 function on_collision(this, temp)
@@ -72,12 +70,11 @@ end
 
 -- Helper functions
 function set_window()
-  camera = krig.get_camera()
-  camera_position = krig.object.get_position(camera)
-  x_min = camera_position[1] - math.random(50)
-  x_max = camera_position[1] + math.random(50)
-  y_min = camera_position[2] + math.random(10) + 5
-  y_max = camera_position[2] + math.random(50)
+  camera = krig.get_camera():load()
+  x_min = camera.position[1] - math.random(50)
+  x_max = camera.position[1] + math.random(50)
+  y_min = camera.position[2] + math.random(10) + 5
+  y_max = camera.position[2] + math.random(50)
 end
 
 function calc_speed()

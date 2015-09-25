@@ -19,50 +19,55 @@ function on_load(terrain)
   krig.level.set_light_direction(0.25, 0.25, 0.5)
 
   krig.level.set_terrain(terrain, "./terrains/level.txt")
-  krig.object.disable_collision_detection(terrain)
+  terrain.collision_detection_enabled = false
+  terrain:save()
 
   player = krig.get_player()
-  krig.object.set_script(player, "./scripts/player.lua")
-  krig.object.set_position(player, X_START_PLAYER, 20.0, Z_START_CAMERA - 20.0)
+  player:set_script("./scripts/player.lua")
+  player.position = {X_START_PLAYER, 20.0, Z_START_CAMERA - 20.0}
+  player:save()
 
   camera = krig.get_camera()
-  krig.object.set_script(camera, "./scripts/camera.lua")
-  krig.object.set_position(camera, X_START_CAMERA, 20.0, Z_START_CAMERA)
+  camera:set_script("./scripts/camera.lua")
+  camera.position = {X_START_CAMERA, 20.0, Z_START_CAMERA}
+  camera:save()
 
   for i=1,25 do
     obj = krig.level.add_object("./scripts/building.lua")
-    krig.object.set_position(obj, 130.0, 10.0, -(i * 70) - 250.0)
-    krig.object.set_scale(obj, 10.0, 20.0, 10.0)
+    obj.position = {130.0, 10.0, -(i * 70) - 250.0}
+    obj.scale    = {10.0, 20.0, 10.0}
+    obj:save()
 
     obj = krig.level.add_object("./scripts/building.lua")
-    krig.object.set_position(obj, 190.0, 10.0, -(i * 70) - 250.0)
-    krig.object.set_scale(obj, 10.0, 20.0, 10.0)
+    obj.position = {190.0, 10.0, -(i * 70) - 250.0}
+    obj.scale    = {10.0, 20.0, 10.0}
+    obj:save()
   end
 
   for i=1,40 do
     obj = krig.level.add_object("./scripts/enemy_ship.lua")
-    krig.object.set_position(obj, (math.random(20) + 150), (15 + math.random(10.0)), -(math.random(200) * 10) - 200.0)
-    krig.object.set_scale(obj, 4.0, 4.0, 4.0)
-    krig.object.set_rotation(obj, 0.0,  0.0, 0.0)
+    obj.position = {(math.random(20) + 150), (15 + math.random(10.0)), -(math.random(200) * 10) - 200.0}
+    obj.scale    = {4.0, 4.0, 4.0}
+    obj.rotation = krig.rotation.from_euler({0.0,  0.0, 0.0})
+    obj:save()
   end
 
   boss = krig.level.add_object("./scripts/boss.lua")
-  krig.object.set_position(boss, 160.0, 20.0, -2450.0)
+  boss.position = {160.0, 20.0, -2450.0}
+  boss:save()
 
-  krig.object.add_particle_system(camera, 1)
+  camera:add_particle_system(1)
 end
 
 function on_draw()
-  player = krig.get_player()
-  plr_pos = krig.object.get_position(player)
-  plr_dir = krig.object.get_direction(player)
+  player = krig.get_player():load()
 
   for i = 1, 4 do
     gl.PushMatrix()
     gl.Translate(
-      plr_pos[1] + (plr_dir[1] * 20.0 * i),
-      plr_pos[2] + (plr_dir[2] * 20.0 * i),
-      plr_pos[3] + (plr_dir[3] * 20.0 * i)
+      player.position[1] + (player.direction[1] * 20.0 * i),
+      player.position[2] + (player.direction[2] * 20.0 * i),
+      player.position[3] + (player.direction[3] * 20.0 * i)
     )
     gl.Color(0.0, 0.4, 0.7)
     gl.Begin("LINES")
