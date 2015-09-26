@@ -6,15 +6,12 @@ control_pressed = {
 }
 
 function update(this, controls, key_state)
-  krig.object.orient_on_terrain(this, 0.0, 0.0, 0.0)
+  this:orient_on_terrain(0.0, 0.0, 0.0)
 
-  this_velocity   = krig.object.get_velocity(this)
-  camera          = krig.get_camera()
-  camera_velocity = krig.object.get_velocity(camera)
+  this   = this:load()
+  camera = krig.get_camera():load()
 
-  this_velocity[1] = camera_velocity[1]
-  this_velocity[2] = camera_velocity[2]
-  this_velocity[3] = camera_velocity[3]
+  this.velocity = camera.velocity
 
   for k, v in pairs(controls) do
     if key_state.key_pressed(v) == 1 then
@@ -25,48 +22,44 @@ function update(this, controls, key_state)
     end
   end
 
-  if control_pressed["up"]    == 1 then this_velocity[3] = this_velocity[3] - 25 end
-  if control_pressed["down"]  == 1 then this_velocity[3] = this_velocity[3] + 25 end
-  if control_pressed["left"]  == 1 then this_velocity[1] = this_velocity[1] - 25 end
-  if control_pressed["right"] == 1 then this_velocity[1] = this_velocity[1] + 25 end
+  if control_pressed["up"]    == 1 then this.velocity[3] = this.velocity[3] - 25 end
+  if control_pressed["down"]  == 1 then this.velocity[3] = this.velocity[3] + 25 end
+  if control_pressed["left"]  == 1 then this.velocity[1] = this.velocity[1] - 25 end
+  if control_pressed["right"] == 1 then this.velocity[1] = this.velocity[1] + 25 end
 
-  krig.object.set_velocity(this, this_velocity)
+  restrict_to_view(this, camera)
 
-  restrict_to_view(this)
+  this:save()
 end
 
-function restrict_to_view(this)
-  this_pos = krig.object.get_position(this)
-
+function restrict_to_view(this, camera)
   -- Ax + By + Cz + D = 0
-  plane = krig.camera.get_frustum_plane(1)
-  x     = -(((plane[3] * this_pos[3]) + plane[4]) / plane[1])
+  plane = camera:get_frustum_plane(1)
+  x     = -(((plane[3] * this.position[3]) + plane[4]) / plane[1])
 
-  if this_pos[1] > x - krig.object.get_bounding_sphere_radius(this) then
-    this_pos[1] = x - krig.object.get_bounding_sphere_radius(this)
+  if this.position[1] > x - this.bounding_sphere_radius then
+    this.position[1] = x - this.bounding_sphere_radius
   end
 
-  plane = krig.camera.get_frustum_plane(0)
-  x     = -(((plane[3] * this_pos[3]) + plane[4]) / plane[1])
+  plane = camera:get_frustum_plane(0)
+  x     = -(((plane[3] * this.position[3]) + plane[4]) / plane[1])
 
-  if this_pos[1] < x + krig.object.get_bounding_sphere_radius(this) then
-    this_pos[1] = x + krig.object.get_bounding_sphere_radius(this)
+  if this.position[1] < x + this.bounding_sphere_radius then
+    this.position[1] = x + this.bounding_sphere_radius
   end
 
-  if this_pos[3] > 0 then
-    this_pos[3] = 0
+  if this.position[3] > 0 then
+    this.position[3] = 0
   end
 
-  if this_pos[3] < -140 then
-    this_pos[3] = -140
+  if this.position[3] < -140 then
+    this.position[3] = -140
   end
-
-  krig.object.set_position(this, this_pos)
 end
 
 function on_collision(this,temp)
-  tempId = krig.object.get_type_id(temp)
-  if temp_id == 100 then
-    krig.object.orient_on_terrain(this, 0.0, 0.0, 0.0)
+  temp = temp:load()
+  if temp.type_id == 100 then
+    this:orient_on_terrain(0.0, 0.0, 0.0)
   end
 end

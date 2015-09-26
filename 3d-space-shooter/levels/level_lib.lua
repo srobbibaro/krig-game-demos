@@ -3,15 +3,13 @@ endTimer     = 10.0
 debugEnabled = nil
 
 function display_hud(bossLife)
-  player = krig.get_player()
+  player = krig.get_player():load()
 
   ShipEnergy  = krig.get_script_value(player, "life")
   score       = krig.get_script_value(player, "score")
   EnemyEnergy = bossLife
   EnergyBar   = -0.31 - (0.068 * (10.0 - ShipEnergy))
   BossEnergy  = 0.31 + (0.017 * (40.0 - EnemyEnergy))
-
-  plr_pos = krig.object.get_position(player)
 
   gl.PushMatrix()
   gl.Translate (0.0, 0.0, -2.0)
