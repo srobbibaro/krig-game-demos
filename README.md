@@ -1,7 +1,7 @@
 Krig Game Engine - Demos
 ========================
 
-Krig is an open source game engine created to run on the Linux operating system.
+Krig is a cross-platform, open source game engine.
 
 For more information, see: https://github.com/srobbibaro/krig-game-engine
 
@@ -9,9 +9,15 @@ This repository contains demo games which run on the Krig Game Engine.
 
 ## Getting Started
 
-At this time, Krig is known to run on 32-bit Debian-based Linux
-distributions running GNOME. Other distributions and configurations should work,
-but have not been verified.
+At this time, Krig is known to build and run on a number of *nix operating systems.
+
+The following configurations are known to work:
+* 32/64-bit Debian-based Linux distributions with GNOME or XFCE (native)
+* 32-bit Debian-based Linux distributions with GNOME or XFCE (VM with hardware acceleration)
+* 64-bit Debian-based Linux distributions with GNOME or XFCE (VM without hardware acceleration)
+* Mac OSX Yosemite and El Capitan
+
+Other distributions and configurations should work, but have not been verified.
 
 ### Setup
 
