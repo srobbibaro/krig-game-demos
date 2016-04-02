@@ -1,4 +1,3 @@
-inspect = require('inspect')
 -- Configuration
 life  = 1
 score = 0
@@ -46,5 +45,4 @@ function create_score_text(this)
   obj.color     = {1.0, 1.0, 1.0, 1.0}
   obj:save()
   obj = obj:load()
-  print(inspect(obj))
 end
