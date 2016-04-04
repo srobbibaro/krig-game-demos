@@ -18,7 +18,7 @@ function on_load(terrain)
 
   krig.level.set_light_direction(0.25, 0.25, 0.5)
 
-  krig.level.set_terrain(terrain, "./terrains/level.txt")
+  krig.level.set_terrain(terrain, "./terrains/level1.txt")
   terrain.collision_detection_enabled = false
   terrain:save()
 
