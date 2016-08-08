@@ -1,5 +1,6 @@
 -- Configuration
 levels = {
+  "./levels/level2.lua",
   "./levels/level1.lua",
 }
 
